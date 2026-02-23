@@ -40,6 +40,9 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
+node_modules/
+client/node_modules/
+server/node_modules/
 
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
@@ -67,6 +70,8 @@ web_modules/
 
 # dotenv environment variable files
 .env
+client/.env
+server/.env
 .env.*
 !.env.example
 
@@ -77,6 +82,8 @@ web_modules/
 # Next.js build output
 .next
 out
+client/dist/
+server/dist/
 
 # Nuxt.js build / generate output
 .nuxt
@@ -137,3 +144,7 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# OS files
+.DS_Store
+Thumbs.db
