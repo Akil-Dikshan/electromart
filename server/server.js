@@ -1,11 +1,16 @@
+import connectDB from './config/db.js';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
+import productRoutes from './routes/productRoutes.js';
 
-//Load environment variables
+
+
+//connect the databse immediatly when the server starts
 dotenv.config();
+connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -18,12 +23,13 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json());     // Parse JSON request bodies
+app.use('/api/products', productRoutes);
 
 //Health Check Route
 app.get('/api/health', (req, res) => {
   res.json({ 
     status: 'ok', 
-    message: 'ElectroMart API is running 🚀' 
+    message: 'ElectroMart API is running...' 
   });
 });
 
