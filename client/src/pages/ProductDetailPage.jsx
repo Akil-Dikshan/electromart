@@ -3,14 +3,15 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { getProductById } from '../api/products'
-
+import { useCart } from '../context/CartContext'
 
 function ProductDetailPage() {
-    const { id } = useParams()
-    const [product, setProduct] = useState(null)
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState(null)
-    useEffect(() => {
+  const { id } = useParams()
+  const [product, setProduct] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const { addToCart } = useCart()
+  useEffect(() => {
     const fetchProduct = async () => {
       try {
         const data = await getProductById(id)
@@ -23,8 +24,8 @@ function ProductDetailPage() {
     }
 
     fetchProduct()
-    }, [id])
-    if (loading) return (
+  }, [id])
+  if (loading) return (
     <div className="min-h-screen flex items-center justify-center">
       <p className="text-gray-500 text-lg">Loading product...</p>
     </div>
@@ -40,9 +41,9 @@ function ProductDetailPage() {
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="bg-white rounded-lg shadow-md p-8">
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            
+
             {/* Product Image */}
             <div>
               <img
@@ -86,7 +87,10 @@ function ProductDetailPage() {
               </p>
 
               {/* Add to Cart Button */}
-              <button className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition-colors text-lg font-semibold">
+              <button
+                onClick={() => addToCart(product)}
+                className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition-colors text-lg font-semibold"
+              >
                 Add to Cart
               </button>
 
