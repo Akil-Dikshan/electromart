@@ -5,8 +5,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import productRoutes from './routes/productRoutes.js';
-
-
+import { clerkAuth } from './middleware/auth.js'
 
 //connect the databse immediatly when the server starts
 dotenv.config();
@@ -23,6 +22,7 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json());     // Parse JSON request bodies
+app.use(clerkAuth)
 app.use('/api/products', productRoutes);
 
 //Health Check Route
