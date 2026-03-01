@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { HiOutlineShoppingCart } from "react-icons/hi"
+import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/clerk-react'
 
 function Navbar() {
   const { cartCount } = useCart()
@@ -34,6 +35,21 @@ function Navbar() {
               </span>
             )}
           </Link>
+
+          {/* Auth Buttons */}
+          {/*<SignedOut> only renders its children if the user is NOT logged in.*/}
+          <SignedOut>
+            <SignInButton mode="modal">
+              <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+                Sign In
+              </button>
+            </SignInButton>
+          </SignedOut>
+
+          <SignedIn>
+            { /*Shows the user's avatar.*/}
+            <UserButton afterSignOutUrl="/" />
+          </SignedIn>
         </div>
 
       </div>
