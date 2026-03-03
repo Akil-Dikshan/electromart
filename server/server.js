@@ -6,6 +6,7 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 import productRoutes from './routes/productRoutes.js';
 import { clerkAuth } from './middleware/auth.js'
+import uploadRoutes from './routes/uploadRoutes.js';
 
 //connect the databse immediatly when the server starts
 dotenv.config();
@@ -24,6 +25,7 @@ app.use(cors({
 app.use(express.json());     // Parse JSON request bodies
 app.use(clerkAuth)
 app.use('/api/products', productRoutes);
+app.use('/api/upload', uploadRoutes);
 
 //Health Check Route
 app.get('/api/health', (req, res) => {

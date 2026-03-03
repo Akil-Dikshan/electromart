@@ -7,6 +7,7 @@ import CartPage from './pages/CartPage'
 import CheckoutPage from './pages/CheckoutPage'
 import OrderSuccessPage from './pages/OrderSuccessPage'
 import ProtectedRoute from './components/ProtectedRoute'
+import AdminPage from './pages/AdminPage'
 
 function App() {
   return (
@@ -27,7 +28,12 @@ function App() {
             <OrderSuccessPage />
           </ProtectedRoute>
         } />
+        <Route path="/admin" element={
+          <ProtectedRoute>
+            <AdminPage />
+          </ProtectedRoute>} />
       </Routes>
+
     </BrowserRouter>
   )
 }

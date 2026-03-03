@@ -4,8 +4,8 @@ import { clerkMiddleware, requireAuth } from '@clerk/express'
 export const clerkAuth = clerkMiddleware()
 //blocks the request if the user is not logged in. Returns 401 if no valid token is found.
 export const protectRoute = (req, res, next) => {
-  const auth = req.auth
-
+  
+  const auth = req.auth()
   if (!auth || !auth.userId) {
     return res.status(401).json({ 
       success: false, 
