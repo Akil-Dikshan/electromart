@@ -1,15 +1,16 @@
-import connectDB from './config/db.js';
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import dotenv from 'dotenv';
+import connectDB from './config/db.js';
 import productRoutes from './routes/productRoutes.js';
 import { clerkAuth } from './middleware/auth.js'
 import uploadRoutes from './routes/uploadRoutes.js';
 
 //connect the databse immediatly when the server starts
-dotenv.config();
 connectDB();
 
 const app = express();
