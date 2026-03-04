@@ -108,14 +108,15 @@ const Navbar = () => {
             <div className="container mx-auto px-6 lg:px-10 max-w-[1600px] py-[22px] flex justify-between items-center">
                 {/* Logo */}
                 <Link to="/" className="flex items-center cursor-pointer">
-                    <div className="text-[#2B3445] mr-2">
-                        <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M22 2L42 12V32L22 42L2 32V12L22 2Z" stroke="#2B3445" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M14 26V20H30V26" stroke="#2B3445" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M14 20L18 16H26L30 20" stroke="#2B3445" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <div className="flex items-center gap-2">
+                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="18" cy="18" r="17" fill="#2B3445" />
+                            <polygon points="21,6 12,19 18,19 15,30 24,17 18,17" fill="#F5A623" />
                         </svg>
+                        <span style={{ fontFamily: 'Georgia, serif', fontSize: '22px', fontWeight: '700', color: '#2B3445', letterSpacing: '-0.5px' }}>
+                            Electro<span style={{ color: '#F5A623' }}>Mart</span>
+                        </span>
                     </div>
-                    <span className="text-[28px] font-bold tracking-tight text-[#2B3445] -ml-2">ElectroMart</span>
                 </Link>
 
                 {/* Navigation Links */}
