@@ -10,14 +10,15 @@ const Footer = () => {
                     {/* Brand & Contact Info */}
                     <div className="flex flex-col gap-6">
                         {/* Logo */}
-                        <a href="#" className="flex items-center gap-2">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="white" />
-                                <path d="M2 17L12 22L22 17" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                <path d="M2 12L12 17L22 12" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        <div className="flex items-center gap-2">
+                            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="18" cy="18" r="17" fill="#2B3445" />
+                                <polygon points="21,6 12,19 18,19 15,30 24,17 18,17" fill="#F5A623" />
                             </svg>
-                            <span className="text-2xl font-bold tracking-tight">ElectroMart</span>
-                        </a>
+                            <span style={{ fontFamily: 'Georgia, serif', fontSize: '22px', fontWeight: '700', color: '#fafafa', letterSpacing: '-0.5px' }}>
+                                Electro<span style={{ color: '#F5A623' }}>Mart</span>
+                            </span>
+                        </div>
                         <p className="text-gray-400 text-sm leading-relaxed max-w-[280px]">
                             ElectroMart is your trusted destination for the latest electronics, smart gadgets, and high-performance devices. We deliver quality products at competitive prices with fast shipping and reliable customer support across Sri Lanka.
                         </p>
