@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary-dark: #202633;
+    --color-primary-accent: #2c3345;
+    --color-bg-light: #f6f9fc;
+    --color-text-main: #2b3445;
+    --color-text-muted: #7d879c;
+  }
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--color-text-main);
+  background-color: #ffffff;
+}

@@ -1,0 +1,46 @@
+name: ElectroMart CI
+
+on:
+  push:
+    branches: [ main, develop, feature/* ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build-server:
+    name: Check Server
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install server dependencies
+        working-directory: ./server
+        run: npm install
+
+  build-client:
+    name: Check Client
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install client dependencies
+        working-directory: ./client
+        run: npm install
+
+      - name: Build client
+        working-directory: ./client
+        run: npm run build
