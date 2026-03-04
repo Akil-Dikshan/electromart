@@ -1,123 +1,86 @@
-import Navbar from '@/components/Navbar'
-import React from 'react'
-import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
-import { getProductById } from '../api/products'
-import { useCart } from '../context/CartContext'
+import React, { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import ProductInfo from '../components/ProductInfo';
+import ProductTabs from '../components/ProductTabs';
+import RelatedProducts from '../components/RelatedProducts';
+import { ChevronRight } from 'lucide-react';
+import { getProductById, getProducts } from '../api/products';
 
-function ProductDetailPage() {
-  const { id } = useParams()
-  const [product, setProduct] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const { addToCart } = useCart()
+const ProductDetailPage = () => {
+  const { id } = useParams();
+  const [product, setProduct] = useState(null);
+  const [relatedProducts, setRelatedProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Scroll to top when navigating to a new product
   useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const data = await getProductById(id)
-        setProduct(data.product)
-        setLoading(false)
-      } catch (error) {
-        setError('Failed to load product')
-        setLoading(false)
-      }
-    }
+    window.scrollTo(0, 0);
+  }, [id]);
 
-    fetchProduct()
-  }, [id])
+  useEffect(() => {
+    const fetchProductData = async () => {
+      setLoading(true);
+      try {
+        const data = await getProductById(id);
+        setProduct(data.product);
+
+        // Fetch other products for the related section
+        const allProductsData = await getProducts();
+        const filtered = allProductsData.products
+          .filter(p => p._id !== id)
+          .slice(0, 4);
+        setRelatedProducts(filtered);
+
+        setLoading(false);
+      } catch (err) {
+        setError('Failed to load product');
+        setLoading(false);
+      }
+    };
+
+    fetchProductData();
+  }, [id]);
+
   if (loading) return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center bg-white">
       <p className="text-gray-500 text-lg">Loading product...</p>
     </div>
-  )
+  );
 
-  if (error) return (
-    <div className="min-h-screen flex items-center justify-center">
-      <p className="text-red-500 text-lg">{error}</p>
+  if (error || !product) return (
+    <div className="min-h-screen flex items-center justify-center bg-white">
+      <p className="text-red-500 text-lg">{error || 'Product not found'}</p>
     </div>
-  )
+  );
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        <div className="bg-white rounded-lg shadow-md p-8">
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
-            {/* Product Image */}
-            <div>
-              <img
-                src={product.images[0]?.url}
-                alt={product.images[0]?.alt}
-                className="w-full rounded-lg object-cover"
-              />
-            </div>
-
-            {/* Product Info */}
-            <div>
-              <p className="text-sm text-gray-500 mb-2">{product.brand}</p>
-              <h1 className="text-3xl font-bold text-gray-900 mb-4">
-                {product.name}
-              </h1>
-
-              {/* Price */}
-              <div className="flex items-center gap-3 mb-6">
-                <span className="text-3xl font-bold text-gray-900">
-                  ${product.price}
-                </span>
-                {product.originalPrice && (
-                  <span className="text-xl text-gray-400 line-through">
-                    ${product.originalPrice}
-                  </span>
-                )}
-              </div>
-
-              {/* Description */}
-              <p className="text-gray-600 mb-6">{product.description}</p>
-
-              {/* Stock */}
-              <p className="text-sm text-gray-500 mb-6">
-                {product.stock > 0 ? (
-                  <span className="text-green-600">
-                    In Stock ({product.stock} available)
-                  </span>
-                ) : (
-                  <span className="text-red-600">Out of Stock</span>
-                )}
-              </p>
-
-              {/* Add to Cart Button */}
-              <button
-                onClick={() => addToCart(product)}
-                className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition-colors text-lg font-semibold"
-              >
-                Add to Cart
-              </button>
-
-            </div>
-          </div>
-
-          {/* Specifications */}
-          {product.specifications && (
-            <div className="mt-8">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">
-                Specifications
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {Object.entries(product.specifications).map(([key, value]) => (
-                  <div key={key} className="flex justify-between border-b pb-2">
-                    <span className="text-gray-500">{key}</span>
-                    <span className="font-medium">{value}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
+    <div className="bg-white min-h-screen pb-20">
+      {/* Breadcrumb missing from design, but standard practice */}
+      <div className="bg-white py-4 border-b border-gray-100 mb-8">
+        <div className="container mx-auto px-6 lg:px-10 max-w-[1600px] flex items-center gap-2 text-[14px] text-gray-500">
+          <Link to="/" className="hover:text-[#D23F57] transition-colors">Home</Link>
+          <ChevronRight className="w-4 h-4" />
+          <Link to="/products" className="hover:text-[#D23F57] transition-colors">Products</Link>
+          <ChevronRight className="w-4 h-4" />
+          <span className="truncate max-w-[200px] sm:max-w-[400px]">{product.name}</span>
         </div>
       </div>
-    </div>
-  )
-}
 
-export default ProductDetailPage
+      <div className="container mx-auto px-6 lg:px-10 max-w-[1600px] flex flex-col gap-16">
+        <div className="bg-[#fafafa] p-8 rounded-lg">
+          <ProductInfo product={product} />
+        </div>
+        <div>
+          <ProductTabs product={product} />
+          {relatedProducts.length > 0 && (
+            <RelatedProducts products={relatedProducts} />
+          )}
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
+export default ProductDetailPage;
