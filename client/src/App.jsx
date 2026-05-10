@@ -1,4 +1,6 @@
+import { useState, useEffect, useRef } from "react"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { useAuth } from "@clerk/clerk-react"
 import HomePage from './pages/HomePage'
 import ProductsPage from './pages/ProductsPage'
 import ProductDetailPage from './pages/ProductDetailPage'
@@ -9,10 +11,59 @@ import CheckoutPage from './pages/CheckoutPage'
 import OrderSuccessPage from './pages/OrderSuccessPage'
 import ProtectedRoute from './components/ProtectedRoute'
 import AdminPage from './pages/AdminPage'
+import LoadingScreen from './components/LoadingScreen'
+import { getProducts } from './api/products'
 
 function App() {
+  const { isLoaded } = useAuth()
+  const [loadingProgress, setLoadingProgress] = useState(0)
+  const [isComplete, setIsComplete] = useState(false)
+  const [showLoader, setShowLoader] = useState(true)
+  const fetchStarted = useRef(false)
+
+  useEffect(() => {
+    if (!isLoaded || fetchStarted.current) return
+    fetchStarted.current = true
+
+    // Clerk is loaded → 40%
+    setLoadingProgress(40)
+
+    // Short pause then start fetch → 60%
+    const startFetch = setTimeout(() => {
+      setLoadingProgress(60)
+
+      getProducts()
+        .then(() => {
+          // Products received → 90%
+          setLoadingProgress(90)
+
+          setTimeout(() => {
+            setLoadingProgress(100)
+            setIsComplete(true)
+
+            setTimeout(() => {
+              setShowLoader(false)
+            }, 600)
+          }, 500)
+        })
+        .catch(() => {
+          setLoadingProgress(90)
+          setTimeout(() => {
+            setLoadingProgress(100)
+            setIsComplete(true)
+            setTimeout(() => setShowLoader(false), 600)
+          }, 500)
+        })
+    }, 200)
+
+    return () => clearTimeout(startFetch)
+  }, [isLoaded])
+
   return (
     <BrowserRouter>
+      {showLoader && (
+        <LoadingScreen progress={loadingProgress} isComplete={isComplete} />
+      )}
       <div className="min-h-screen bg-white flex flex-col">
         <Navbar />
         <main className="flex-1">
@@ -34,7 +85,8 @@ function App() {
             <Route path="/admin" element={
               <ProtectedRoute>
                 <AdminPage />
-              </ProtectedRoute>} />
+              </ProtectedRoute>
+            } />
           </Routes>
         </main>
         <Footer />
