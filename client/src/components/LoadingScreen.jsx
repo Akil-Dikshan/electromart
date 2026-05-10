@@ -65,31 +65,34 @@ function LoadingScreen({ progress, isComplete }) {
 
         </div>
 
-        {/* Loading line */}
+        {/* Loading label + percentage */}
         <div style={{
-          marginTop: '1.25rem',
+          marginTop: '2rem',
           display: 'flex',
-          alignItems: 'center',
-          gap: '0.6rem',
-          alignSelf: 'flex-end',
-          paddingRight: '0.25rem',
+          alignItems: 'baseline',
+          justifyContent: 'space-between',
+          width: '100%',
+          maxWidth: 'clamp(320px, 78vw, 860px)',
+          paddingInline: '0.15rem',
         }}>
           <span style={{
-            fontSize: '0.8rem',
-            color: '#94A3B8',
-            letterSpacing: '0.05em',
+            fontSize: '1rem',
+            color: '#64748B',
+            letterSpacing: '0.18em',
             fontWeight: 400,
+            textTransform: 'uppercase',
           }}>
-            loading...
+            Loading...
           </span>
           <span style={{
-            fontSize: '0.8rem',
+            fontSize: '1.6rem',
             color: '#2596be',
-            fontWeight: 600,
-            letterSpacing: '0.02em',
-            minWidth: '3ch',
+            fontWeight: 700,
+            letterSpacing: '-0.02em',
+            minWidth: '4.5ch',
+            textAlign: 'right',
           }}>
-            {pct} %
+            {pct}<span style={{ fontSize: '1rem', fontWeight: 500, marginLeft: 2 }}>%</span>
           </span>
         </div>
 
